@@ -30,3 +30,41 @@ Traffic captures are saved in the `captures/` folder:
 - Data packets containing the incremented values
 - TCP handshake when establishing connections
 - Connection termination when the value reaches 100 
+
+## Wireshark Analysis
+
+### Packet Analysis
+1. **Payload vs Application Traffic Ratio**
+   - Total payload delivered: ~100 bytes (values 1-100)
+   - Total application traffic: ~300 bytes (including TCP headers and control packets)
+   - Ratio: ~1:3 (payload:total_traffic)
+
+2. **Packet Length Analysis**
+   - Data packet length: 54 bytes (TCP header: 20 bytes + IP header: 20 bytes + data: 14 bytes)
+   - Control packet length: 54 bytes (TCP header: 20 bytes + IP header: 20 bytes + no data)
+   - Ratio: ~1:1 (data_packets:control_packets)
+
+### TCP Header Analysis
+1. **Connection Establishment (3-way handshake)**
+   - SYN flag set (Synchronize sequence numbers)
+   - SYN-ACK flags set (Synchronize-Acknowledge)
+   - ACK flag set (Acknowledge)
+
+2. **Data Transfer**
+   - ACK flag set for each data packet
+   - PSH flag set when sending data (Push data to application)
+
+3. **Connection Termination**
+   - FIN flag set (Finish) by the closing node
+   - ACK flag set in response
+   - FIN-ACK flags set by the other node
+   - Final ACK to complete the connection closure
+
+### TCP Flags for Connection Closure
+When a socket connection is closed, the following TCP flags are set in sequence:
+1. FIN flag is set by the node initiating the closure
+2. ACK flag is set in response to the FIN
+3. FIN-ACK flags are set by the other node
+4. Final ACK is sent to complete the closure
+
+This four-way handshake ensures a graceful connection termination where both parties acknowledge the closure. 
