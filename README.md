@@ -17,4 +17,16 @@ This project implements a ring communication using TCP sockets in Java. Each nod
 - Node 3: `java -cp src Main 5003 127.0.0.1 5001 0`
 
 ## Wireshark Captures
-Traffic captures are saved in the `captures/` folder. 
+Traffic captures are saved in the `captures/` folder:
+- `ring-communication-localhost.pcapng` - TCP traffic capture between the 3 nodes on localhost (lo0 interface)
+
+### How to View the Capture
+1. Open Wireshark
+2. Open the file `captures/ring-communication-localhost.pcapng`
+3. Apply the filter: `tcp.port == 5001 || tcp.port == 5002 || tcp.port == 5003`
+
+### What You Can Observe
+- TCP communication between nodes on ports 5001, 5002, and 5003
+- Data packets containing the incremented values
+- TCP handshake when establishing connections
+- Connection termination when the value reaches 100 
